@@ -1,13 +1,9 @@
-Para compilar:
+Instructions:
 
-    make
-
-
-Depois:
-
-   Vá no código gerado 'sintatico.tab.c'
-	Altere a linha #3000 que é assim: char const *yymsgp = YY_("syntax error");
-	Para:                             char *yymsgp = YY_("syntax error");
+        In order to build simply run
+                "make"
+        in terminal, if you are using an UNIX OS.
 
 
-E então use: make build
+        To parse an file use c-like-parser < NAMEOFTHEFILE.XPTO
+
