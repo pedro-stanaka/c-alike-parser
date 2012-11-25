@@ -315,28 +315,58 @@ expressao: expressao_condicional {}
 
 X5	: expressao_condicional Y5 {}
 ;
-
+//STOP POINT - RECOVER FROM HERE -
 Y5	: ASSIGN W5 {}
 	| ADD_ASSIGN W5 {}
-	| MINUS_ASSIGN W5 {}
+	| MINUS_ASSIGN W5 {
+		Z5 * aux = new Z5();
+		aux->a = $1;
+		aux->b = $2;
+		$$ = aux;
+	}
 ;
 
-W5	: expressao_condicional {}
-	| Z5 {}
+W5	: expressao_condicional {$$ = $1;}
+	| Z5 {$$ = $1;}
 ;
 
-Z5	: expressao_condicional Y5 {}
+Z5	: expressao_condicional Y5 {
+		Z5 * aux = new Z5();
+		aux->a = $1;
+		aux->b = $2;
+		$$ = aux;
+	}
 ;
 
-expressao_condicional: expressao_or_logico {}
-	| A1 {}
+expressao_condicional: expressao_or_logico {
+		$$ = $1;
+	}
+	| A1 {
+		$$ = $1;
+	}
 ;
 
-A1	: expressao_or_logico TERNARY_CONDITIONAL expressao_or_logico COLON expressao_or_logico {}
+A1	: expressao_or_logico TERNARY_CONDITIONAL expressao_or_logico COLON expressao_or_logico {
+	A1 * aux = new A1();
+	aux->d = $1;
+	aux->b = $3;
+	aux->c = $5;
+	Leaf * leaf = new Leaf();
+	leaf->symbol = "TERNARY_CONDITIONAL";
+	leaf->value = 0;
+	leaf->a = NULL;
+	leaf->b = NULL;
+	aux->a = leaf;
+	$$ = aux;
+}
 ;
 
-expressao_and_logico: expressao_or {}
-		| X3 {}
+expressao_and_logico: expressao_or {
+			$$ = $1;
+		}
+		| X3 {
+			$$ = $1;
+		}
 ;
 
 X3	: expressao_or Y3 {
@@ -683,7 +713,7 @@ M	: expressao_aditiva {
 		$$ = $1;
 	}
 ;
-//STOP POINT - RECOVER FROM HERE -
+
 N	: expressao_aditiva L {
 		N * aux = new N();
 		aux->a = $1;

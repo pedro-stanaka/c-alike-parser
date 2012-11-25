@@ -776,6 +776,17 @@ public:
 	}
 };
 
+class A1 : public Node
+{
+public:
+	Node * c;
+	void RPN(){
+
+	}
+};
+
+
+
 
 
 
