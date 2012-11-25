@@ -5,5 +5,5 @@ Instructions:
         in terminal, if you are using an UNIX OS.
 
 
-        To parse an file use c-like-parser < NAMEOFTHEFILE.XPTO
+        To parse an file use "./c-like-parser < NAMEOFTHEFILE.XPTO"
 
