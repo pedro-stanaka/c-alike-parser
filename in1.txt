@@ -1,0 +1,58 @@
+#define CONST 1+1
+
+int aux;
+int k=3;
+int i=8,j=4;
+
+int function()
+{
+	i = 5;
+}
+
+int xxx = 8;
+
+int foo(int i,int j)
+{
+	return (i+j);
+}
+
+int bar()
+{
+	char ch;
+	int i;
+	int j;
+	
+	i = 1+3;
+	scanf("%d",&j);
+	
+	if(j>i)
+	{
+		printf("%d\n",j);
+	}
+	else
+	{
+		for(i=0;i<10;i++)
+		{
+			j++;
+			for(;;)
+			{
+				for(;;j<5)
+				{
+					i--;
+					j++;
+				}
+			}
+		}
+	}
+	return(i);
+}
+
+#define MAGIC_NUMBER 666
+
+int main()
+{
+	int x=5,y=x+6;
+	printf("i: %d\nj: %d\n",i,j);
+	printf("x: %d\ny: %d\n",x,y);
+	printf("xxx: %d\n",xxx);
+}
