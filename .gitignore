@@ -1,9 +1,10 @@
 	 *.yy.c
 	 *.tab.c
-         *.tab.h
-         *.o
-         *.output
-         c-like-parser
-         *.*~
-         c-alike-parser.zip
+     *.tab.h
+     *.o
+     *.output
+     c-like-parser
+     *.*~
+     c-alike-parser.zip	
+     *.txt
 
