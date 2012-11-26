@@ -2,16 +2,15 @@ FLEX=flex
 BISON=bison
 CC=g++
 
-PROGRAMA = c-like-parser
-LEXICO = lexico.l
-SINTATICO = sintatico.y
+PROGRAM = c-like-parser
+LEX = lex.l
+PARSER = parser.y
 
-$(PROGRAMA): $(LEXICO) $(SINTATICO)
-	$(BISON) -d -r all -v -k $(SINTATICO)
-	$(FLEX) $(LEXICO)
-#	$(CC) *.c -o $(PROGRAMA) -I. -B .
+$(PROGRAM): $(LEX) $(PARSER)
+	$(BISON) -d -r all -v -k $(PARSER)
+	$(FLEX) $(LEX)
 	$(CC) -c *.c -I. -w
-	$(CC) *.o -o $(PROGRAMA)
+	$(CC) *.o -o $(PROGRAM)
 
 clean:
 	rm -f *.yy.c
@@ -19,15 +18,12 @@ clean:
 	rm -f *.tab.h
 	rm -f *.o
 	rm -f *.output
-	rm -f $(PROGRAMA)
-
-
-build:
-	$(CC) -c *.c -I.
-	$(CC) *.o -o $(PROGRAMA)
+	rm -f $(PROGRAM)
+	rm -f *.*~
+	rm -f c-alike-parser.zip
 
 zip:
-	zip -r sintatico_final.zip *
+		zip -r -9 c-alike-parser.zip lex.l Makefile node.c node.h parser.y test-case.cag
 
-test1:
-	./$(PROGRAMA) < teste.txt
+test:
+	./$(PROGRAM) < test-case.cag
