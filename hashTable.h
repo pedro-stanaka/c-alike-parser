@@ -8,11 +8,13 @@
 #define HASH_SIZE 211
 
 
-class No {
+class Node {
 	public:
 		char* data;
 		char* type;
-		No* next;
+        char* identifier;
+        char* params;
+		Node* next;
 };
 
 class Hash {
@@ -38,14 +40,19 @@ class Hash {
 		};
 		
 	public:
-		No* hash[HASH_SIZE];
+		Node* hash[HASH_SIZE];
 		char* name;
 		Hash * FnList;
 		char* fnTp;
-		char* args;
+		char* params;
 		
 		Hash() {
 			init();
+		}
+
+		Hash(char * name){
+			init();
+			this->name = name;
 		}
 	
 		void init() {
@@ -56,23 +63,29 @@ class Hash {
 		}
 
 		void insert(char* data, char* type) {
-			No* aux;
+			Node* aux;
 			
 			int value = 0;
+
 			
 			// mapping the position according to the word
 			for(int i = 0; i < strlen(data); i++){
 				value += ((int) data[i])*prime(i+1);
 			}
-			do
-			int position = (int) value % HASH_SIZE;
-			
-			aux = (No*) malloc(sizeof(No));
+			do{
+				int position = (int) value % HASH_SIZE;
+			}while(value > HASH_SIZE);
+			aux = (Node*) malloc(sizeof(Node));
 			aux->data = data;
 			aux->type = type;
 			aux->next = hash[position];
 			hash[position] = aux;
 		}
+
+		void insFn(Node * toIns){
+
+		}
+		asdjafsad{]]]]]}
 };
 
 #endif

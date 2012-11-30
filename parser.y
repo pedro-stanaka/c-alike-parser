@@ -1,9 +1,8 @@
 %{
-
 #include <stdio.h>
 #include "ast.h"
 #include "hashTable.h"
-#include <parser.tab.h>
+#include "parser.tab.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -43,6 +42,7 @@ void treeWalk(GenericNode* aux)
 %code requires  {   
                     class GenericNode;
                     class HashTable;
+                    class Node;
                 }
 
 %union{
@@ -71,6 +71,7 @@ void treeWalk(GenericNode* aux)
 
 %type <ast> program declaration 
 %type <symId> IDENTIFIER
+%type <integer> NUM_INTEGER NUM_HEXA NUM_OCTAL
 %type <ast> function function_pre
 %type <ast> variable_declaration variable_declaration_pre variable_declaration_post
 %type <ast> prototype_declaration
@@ -142,7 +143,6 @@ declaration:
                         aux->setType(DEFINE);
                         aux->symTp = "DEFINE";
                         aux->symId = $3;
-                        
                         $$ = aux;
                 }
            | variable_declaration {$$ = $1;}
@@ -152,10 +152,17 @@ declaration:
 function:
       type IDENTIFIER params L_CURLY_BRACKET commands R_BRACE_BRACKET {
                         GenericNode* aux = new GenericNode($1,$3,$5,NULL);
+                        GenericNode* tmp = (GenericNode*) $1;
+                        aux->symTp = tmp->symTp;
+                        aux->symId = $2;
+                        //HT
                         $$ = aux;
                 }
       | type IDENTIFIER params L_CURLY_BRACKET function_pre commands R_BRACE_BRACKET {
                         GenericNode* aux = new GenericNode($1,$3,$5,$6);
+                        aux->symId = $2;
+                        GenericNode * tmp = (GenericNode*) $1;
+                        aux->symTp = tmp->symTp;
                         $$ = aux;
                 }
       ; 
@@ -171,6 +178,10 @@ function_pre:
 variable_declaration:
                     type variable_declaration_pre {
                                 GenericNode* aux = new GenericNode($1,$2,NULL,NULL);
+                                GenericNode * tmp = (GenericNode*) $1;
+                                aux->symTp = tmp->symTp;
+                                GenericNode * tmp2 = (GenericNode*) $2;
+                                aux->symTp = tmp2->symId;
                                 $$ = aux;
                         }
                     ;
@@ -179,6 +190,7 @@ variable_declaration_pre:
                         IDENTIFIER variable_declaration_post{$$ = $2;}
                         | IDENTIFIER ASSIGN expression variable_declaration_post{
                                         GenericNode* aux = new GenericNode($3,$4,NULL,NULL);
+                                        aux->symId = $1;
                                         $$ = aux;
                                 }
                         ;
@@ -191,6 +203,9 @@ variable_declaration_post:
 prototype_declaration:
                    type IDENTIFIER params SEMICOLON{
                                 GenericNode* aux = new GenericNode($1,$3,NULL,NULL);
+                                GenericNode * tmp = (GenericNode*) $1;
+                                aux->symTp = tmp->symTp;
+                                aux->symId = $2;
                                 $$ = aux;
                         }
                    ;
@@ -201,9 +216,21 @@ params:
           ;
 
 params_post:
-              type IDENTIFIER{$$ = $1;}
+              type IDENTIFIER{
+                        GenericNode * aux = new GenericNode($1,NULL,NULL,NULL);
+                        aux->node_type = R_BRACE_BRACKET;
+                        GenericNode * tmp = (GenericNode*) $1;
+                        aux->symTp = tmp->symTp;
+                        aux->symId = $2;
+                        //HT
+                        $$ = aux;
+                      }
               | type IDENTIFIER COMMA params_post{
                         GenericNode* aux = new GenericNode($1,$4,NULL,NULL);
+                        aux->node_type = R_BRACE_BRACKET;
+                        GenericNode * tmp = (GenericNode*) $1;
+                        aux->symTp = tmp->symTp;
+                        aux->symId = $2;
                         $$ = aux;
                 }
               ;
@@ -218,6 +245,7 @@ commands:
         command_list{$$ = $1;}
         | command_list commands {
                         GenericNode* aux = new GenericNode($1,$2,NULL,NULL);
+                        aux->node_type = R_PAREN;
                         $$ = aux;
                 }
         ;
@@ -612,13 +640,13 @@ number:
 int yyerror( const char *s)
 {
     fprintf(stderr, "Error while parsing: %s\n", s);
-    printf("Error while parsing: %s\n\n", stderr);
+    printf("Error while parsing file: %s\n", s);
 }
 
 
 int main(int argc, char **argv)
 {
-        printf("\n\n \t yyparse return ==> \n\n", yyparse());
+        printf("\n\n \t yyparse return ==> %d\n\n ", yyparse());
         return 0;
 }
 

@@ -1,0 +1,6 @@
+Error while parsing file: syntax error, unexpected REMAINDER, expecting VOID or INT or CHAR or NUMBER_SIGN
+
+
+ 	 yyparse return ==> 1
+
+ 
