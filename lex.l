@@ -1,10 +1,13 @@
 %option noyywrap
 %{
-#include <node.h>
+extern "C"{
+	int yylex(void);
+}
 #include  "parser.tab.h"
         int i = 0;
         int column = 1;
         int lines = 1;
+        
 %}
 
 %%
@@ -15,14 +18,17 @@
 
 "void"  { 
 			column += strlen(yytext); 
+			yylval.symTp = strdup(yytext);
 			return VOID  ;
 		}
 "int"   { 
 			column += strlen(yytext); 
+			yylval.symTp = strdup(yytext);
 			return INT;
 		}
 "char"  { 
 			column += strlen(yytext); 
+			yylval.symTp = strdup(yytext);
 			return CHAR;
 		}
 "return" { 
@@ -141,6 +147,7 @@
 
 [a-zA-Z_][a-zA-Z0-9_]*   {  
 							column += strlen(yytext) ; 
+							yylval.symId = strdup(yytext);
 							return IDENTIFIER ;
 						 }
 

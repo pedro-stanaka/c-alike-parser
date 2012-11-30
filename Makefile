@@ -18,6 +18,7 @@ clean:
 	rm -f *.tab.h
 	rm -f *.o
 	rm -f *.output
+	rm -f *.gch
 	rm -f $(PROGRAM)
 	rm -f *.*~
 	rm -f c-alike-parser.zip
@@ -27,3 +28,5 @@ zip:
 
 test:
 	./$(PROGRAM) < test-case.cag
+
+
